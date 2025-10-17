@@ -9,30 +9,7 @@
 
 ## 🌐 Quick Deploy Options
 
-### 1. Vercel (Recommended - 2 minutes)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/FulfillmentIQ/interview-kits-portal)
-
-**Manual Deployment:**
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Deploy from the portal directory
-cd portal
-vercel
-
-# Follow prompts and deploy
-```
-
-**Automatic Deployments:**
-- Every push to `main` triggers automatic deployment
-- Preview deployments for pull requests
-- Custom domains supported
-
----
-
-### 2. Netlify (3 minutes)
+### 1. Netlify (3 minutes)
 
 1. Go to: https://app.netlify.com/
 2. Click "Add new site" → "Import an existing project"
@@ -44,7 +21,7 @@ vercel
 
 ---
 
-### 3. Docker (Self-hosted)
+### 2. Docker (Self-hosted)
 
 ```bash
 # Build the Docker image
@@ -69,7 +46,7 @@ services:
 
 ---
 
-### 4. AWS (Amplify)
+### 3. AWS (Amplify)
 
 1. Go to: https://console.aws.amazon.com/amplify/
 2. Click "New app" → "Host web app"
@@ -82,7 +59,7 @@ services:
 
 ---
 
-### 5. DigitalOcean (App Platform)
+### 4. DigitalOcean (App Platform)
 
 1. Go to: https://cloud.digitalocean.com/apps
 2. Click "Create App"
@@ -118,12 +95,6 @@ The portal uses:
 
 ## 🌍 Custom Domain
 
-### Vercel
-1. Go to project settings
-2. Add your custom domain
-3. Update DNS records as instructed
-4. SSL automatically configured
-
 ### Netlify
 1. Go to Domain settings
 2. Add custom domain
@@ -155,7 +126,6 @@ The portal is optimized for:
 ## 📈 Monitoring
 
 **Recommended Tools:**
-- **Vercel Analytics** - Built-in with Vercel
 - **Google Analytics** - Add tracking code
 - **Sentry** - Error tracking
 - **LogRocket** - Session replay
@@ -190,13 +160,12 @@ The portal homepage (`/`) serves as the health check endpoint.
 
 | Platform | Free Tier | Paid Plans |
 |----------|-----------|------------|
-| **Vercel** | ✅ Free (hobby) | $20/mo (Pro) |
 | **Netlify** | ✅ Free (100GB/mo) | $19/mo (Pro) |
 | **DigitalOcean** | $5/mo | $10-40/mo |
 | **AWS Amplify** | Free tier 1 year | $0.01/build minute |
 | **Docker (VPS)** | $5/mo (DO/Linode) | $10-50/mo |
 
-**Recommendation:** Start with Vercel free tier, upgrade if needed.
+**Recommendation:** Start with Netlify free tier, upgrade if needed.
 
 ---
 
@@ -245,7 +214,7 @@ The portal homepage (`/`) serves as the health check endpoint.
 
 Once deployed, share the URL with candidates:
 
-**Portal URL:** `https://your-domain.com` (or Vercel URL)
+**Portal URL:** `https://your-domain.com` (or hosting platform URL)
 
 Candidates can:
 1. Browse all 9 exercises

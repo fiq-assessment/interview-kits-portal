@@ -139,21 +139,7 @@ pnpm lint         # Run ESLint
 
 ## 🌍 Deployment
 
-### Deploy to Vercel (Recommended)
-
-1. Push this repository to GitHub
-2. Import in Vercel dashboard
-3. Deploy with one click
-
-```bash
-# Install Vercel CLI
-pnpm install -g vercel
-
-# Deploy
-vercel
-```
-
-### Deploy to Other Platforms
+### Deploy Options
 
 **Netlify:**
 ```bash
