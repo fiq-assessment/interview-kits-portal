@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { exercises } from '../../data/exercises';
+import { Clock, Github, ClipboardList, CheckSquare, Package, AlertTriangle, Ban, Rocket, ArrowLeft, Star } from 'lucide-react';
 
 export default function ExerciseDetailPage() {
   const params = useParams();
@@ -39,15 +40,15 @@ export default function ExerciseDetailPage() {
   };
 
   const getRoleColor = (role: string) => {
-    if (role === 'Frontend') return '#3b82f6';
-    if (role === 'Backend') return '#8b5cf6';
-    return '#ec4899';
+    if (role === 'Frontend') return '#ff6b35';
+    if (role === 'Backend') return '#ff8c42';
+    return '#ffa05c';
   };
 
   return (
     <div style={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
+      background: '#f5f5f5',
       padding: '2rem'
     }}>
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
@@ -55,18 +56,38 @@ export default function ExerciseDetailPage() {
         <button 
           onClick={() => router.push('/')}
           style={{ 
-            padding: '0.5rem 1rem', 
-            background: 'rgba(255,255,255,0.2)', 
-            color: 'white', 
-            border: '1px solid rgba(255,255,255,0.3)', 
-            borderRadius: '8px',
+            padding: '0.75rem 1.5rem', 
+            background: 'white', 
+            color: '#333333', 
+            border: '2px solid #e5e5e5', 
+            borderRadius: '10px',
             cursor: 'pointer',
             marginBottom: '1.5rem',
-            fontSize: '0.875rem',
-            fontWeight: 500
+            fontSize: '0.9375rem',
+            fontWeight: 600,
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+            transition: 'all 0.2s ease',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = '#ff6b35';
+            e.currentTarget.style.color = 'white';
+            e.currentTarget.style.borderColor = '#ff6b35';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.25)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'white';
+            e.currentTarget.style.color = '#333333';
+            e.currentTarget.style.borderColor = '#e5e5e5';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
           }}
         >
-          ← Back to Portal
+          <ArrowLeft size={18} />
+          <span>Back to Portal</span>
         </button>
 
         {/* Header Card */}
@@ -77,67 +98,35 @@ export default function ExerciseDetailPage() {
           marginBottom: '1.5rem',
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
         }}>
-          <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem' }}>
-            <span style={{ 
-              padding: '0.25rem 0.75rem', 
-              borderRadius: '20px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              background: getRoleColor(exercise.role) + '20',
-              color: getRoleColor(exercise.role)
-            }}>
-              {exercise.role}
-            </span>
-            <span style={{ 
-              padding: '0.25rem 0.75rem', 
-              borderRadius: '20px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              background: getLevelColor(exercise.level) + '20',
-              color: getLevelColor(exercise.level)
-            }}>
-              {exercise.level}
-            </span>
-          </div>
-
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#111' }}>
-            {exercise.title}
-          </h1>
-          
-          <p style={{ fontSize: '1.125rem', color: '#667eea', fontWeight: 600, marginBottom: '1.5rem' }}>
-            {exercise.role} • {exercise.level} Level
-          </p>
-
-          <div style={{ 
-            display: 'flex', 
-            gap: '2rem', 
-            padding: '1rem', 
-            background: '#f9fafb', 
-            borderRadius: '12px',
-            marginBottom: '1rem'
-          }}>
-            <div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>
-                TIME LIMIT
-              </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 600, color: '#111' }}>
-                ⏱️ {exercise.time}
-              </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '2rem' }}>
+            <div style={{ flex: 1 }}>
+              <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#111' }}>
+                {exercise.title}
+              </h1>
+              
+              <p style={{ fontSize: '1.125rem', color: '#ff6b35', fontWeight: 600 }}>
+                {exercise.role} • {exercise.level} Level
+              </p>
             </div>
-            <div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>
-                PAGINATION
-              </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 600, color: '#111' }}>
-                📄 {exercise.pagination}
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem' }}>
-                TECH STACK
-              </div>
-              <div style={{ fontSize: '1rem', fontWeight: 600, color: '#111' }}>
-                {exercise.tech.slice(0, 2).join(', ')}
+
+            <div style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '0.75rem 1.5rem', 
+              background: '#fff4ed', 
+              borderRadius: '10px',
+              border: '2px solid #ff6b35',
+              flexShrink: 0
+            }}>
+              <Clock size={28} color="#ff6b35" strokeWidth={2.5} />
+              <div>
+                <div style={{ fontSize: '0.75rem', color: '#c2410c', marginBottom: '0.125rem', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.05em' }}>
+                  Time Limit
+                </div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ff6b35' }}>
+                  {exercise.time}
+                </div>
               </div>
             </div>
           </div>
@@ -151,9 +140,45 @@ export default function ExerciseDetailPage() {
           marginBottom: '1.5rem',
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
         }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            📋 Problem Statement
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '2rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <ClipboardList size={24} color="#111" strokeWidth={2} />
+              <h2 style={{ fontSize: '1.5rem', color: '#111', margin: 0 }}>
+                Problem Statement
+              </h2>
+            </div>
+            <a 
+              href={exercise.githubRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.625rem 1.25rem',
+                background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
+                color: 'white',
+                textDecoration: 'none',
+                borderRadius: '8px',
+                fontSize: '0.9375rem',
+                fontWeight: 600,
+                whiteSpace: 'nowrap',
+                boxShadow: '0 2px 8px rgba(255, 107, 53, 0.25)',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.35)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 107, 53, 0.25)';
+              }}
+            >
+              <Github size={18} />
+              <span>View Repository on GitHub</span>
+            </a>
+          </div>
           <p style={{ lineHeight: '1.8', color: '#374151' }}>
             {exercise.description}
           </p>
@@ -167,9 +192,12 @@ export default function ExerciseDetailPage() {
           marginBottom: '1.5rem',
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
         }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            ✅ Required Tasks
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+            <CheckSquare size={24} color="#111" strokeWidth={2} />
+            <h2 style={{ fontSize: '1.5rem', color: '#111', margin: 0 }}>
+              Required Tasks
+            </h2>
+          </div>
           <ul style={{ paddingLeft: '1.5rem', lineHeight: '2', color: '#374151' }}>
             {exercise.tasks.map((task, i) => (
               <li key={i} style={{ marginBottom: '0.5rem' }}>{task}</li>
@@ -177,32 +205,6 @@ export default function ExerciseDetailPage() {
           </ul>
         </div>
 
-        {/* Tech Stack */}
-        <div style={{ 
-          background: 'white', 
-          borderRadius: '16px', 
-          padding: '2rem',
-          marginBottom: '1.5rem',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
-        }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            🛠️ Technology Stack
-          </h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-            {exercise.tech.map((tech, i) => (
-              <span key={i} style={{ 
-                background: '#f3f4f6', 
-                padding: '0.5rem 1rem', 
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                color: '#4b5563'
-              }}>
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
 
         {/* Expected Deliverables */}
         <div style={{ 
@@ -212,9 +214,12 @@ export default function ExerciseDetailPage() {
           marginBottom: '1.5rem',
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
         }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            📦 Expected Deliverables
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+            <Package size={24} color="#111" strokeWidth={2} />
+            <h2 style={{ fontSize: '1.5rem', color: '#111', margin: 0 }}>
+              Expected Deliverables
+            </h2>
+          </div>
           <ul style={{ paddingLeft: '1.5rem', lineHeight: '2', color: '#374151' }}>
             <li>Functional implementation of all required tasks</li>
             <li>Proper error handling and loading states</li>
@@ -233,9 +238,12 @@ export default function ExerciseDetailPage() {
             marginBottom: '1.5rem',
             boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
           }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-              ⭐ Bonus (If Time Permits)
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <Star size={24} color="#ff6b35" strokeWidth={2} fill="#ff6b35" />
+              <h2 style={{ fontSize: '1.5rem', color: '#111', margin: 0 }}>
+                Bonus (If Time Permits)
+              </h2>
+            </div>
             <ul style={{ paddingLeft: '1.5rem', lineHeight: '2', color: '#374151' }}>
               {exercise.bonus.map((item, i) => (
                 <li key={i} style={{ marginBottom: '0.5rem' }}>{item}</li>
@@ -253,9 +261,12 @@ export default function ExerciseDetailPage() {
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
           border: '2px solid #fbbf24'
         }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            ⚠️ Important Notes
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+            <AlertTriangle size={24} color="#f59e0b" strokeWidth={2} />
+            <h2 style={{ fontSize: '1.5rem', color: '#111', margin: 0 }}>
+              Important Notes
+            </h2>
+          </div>
           <ul style={{ paddingLeft: '1.5rem', lineHeight: '2', color: '#374151' }}>
             <li><strong>Time Limit:</strong> {exercise.time} - Focus on core functionality first</li>
             <li><strong>Documentation:</strong> Leave notes on trade-offs and what you'd do with more time</li>
@@ -273,17 +284,24 @@ export default function ExerciseDetailPage() {
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
           border: '2px solid #f59e0b'
         }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#78350f' }}>
-            🚫 Submission Rules - READ CAREFULLY
-          </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+            <Ban size={24} color="#dc2626" strokeWidth={2.5} />
+            <h2 style={{ fontSize: '1.5rem', color: '#78350f', margin: 0 }}>
+              Submission Rules - READ CAREFULLY
+            </h2>
+          </div>
           <div style={{ 
             background: '#fef3c7', 
             padding: '1rem', 
             borderRadius: '8px',
             marginBottom: '1rem',
-            border: '1px solid #fbbf24'
+            border: '1px solid #fbbf24',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
           }}>
-            <strong style={{ color: '#dc2626', fontSize: '1.125rem' }}>⚠️ COMMITS TO MAIN BRANCH WILL BE REJECTED</strong>
+            <AlertTriangle size={20} color="#dc2626" strokeWidth={2.5} />
+            <strong style={{ color: '#dc2626', fontSize: '1.125rem' }}>COMMITS TO MAIN BRANCH WILL BE REJECTED</strong>
           </div>
           <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem', color: '#78350f' }}>
             Follow these steps:
@@ -338,159 +356,6 @@ export default function ExerciseDetailPage() {
           </ol>
         </div>
 
-        {/* GitHub Repository */}
-        <div style={{ 
-          background: 'white', 
-          borderRadius: '16px', 
-          padding: '2rem',
-          marginBottom: '1.5rem',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
-        }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            📦 Repository
-          </h2>
-          <a 
-            href={exercise.githubRepo}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              background: '#24292e',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '8px',
-              fontSize: '1rem',
-              fontWeight: 500
-            }}
-          >
-            <span>🐙</span>
-            <span>View on GitHub</span>
-          </a>
-          <p style={{ marginTop: '1rem', color: '#6b7280', fontSize: '0.875rem' }}>
-            {exercise.githubRepo}
-          </p>
-        </div>
-
-        {/* Setup Instructions */}
-        <div style={{ 
-          background: 'white', 
-          borderRadius: '16px', 
-          padding: '2rem',
-          marginBottom: '1.5rem',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
-        }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#111' }}>
-            🛠️ Setup Instructions
-          </h2>
-          
-          <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem', color: '#374151', marginTop: '1.5rem' }}>
-            1. Clone the Repository
-          </h3>
-          <div style={{ 
-            background: '#f9fafb', 
-            padding: '1rem', 
-            borderRadius: '8px',
-            fontFamily: 'monospace',
-            fontSize: '0.875rem',
-            marginBottom: '1rem'
-          }}>
-            git clone {exercise.githubRepo}.git<br />
-            cd {exercise.repoName}
-          </div>
-
-          <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem', color: '#374151' }}>
-            2. Install Dependencies
-          </h3>
-          <div style={{ 
-            background: '#f9fafb', 
-            padding: '1rem', 
-            borderRadius: '8px',
-            fontFamily: 'monospace',
-            fontSize: '0.875rem',
-            marginBottom: '1rem'
-          }}>
-            {exercise.role === 'Frontend' && (
-              <>
-                # Install frontend dependencies<br />
-                cd client && pnpm install<br />
-                <br />
-                # Install mock server dependencies<br />
-                cd ../server_mock && pip install -r requirements.txt
-              </>
-            )}
-            {exercise.role === 'Backend' && (
-              <>
-                # Install backend dependencies<br />
-                cd server && pip install -r requirements.txt<br />
-                <br />
-                # Start MongoDB with Docker<br />
-                docker-compose up -d
-              </>
-            )}
-            {exercise.role === 'Full-Stack' && (
-              <>
-                # Install frontend dependencies<br />
-                cd client && pnpm install<br />
-                <br />
-                # Install backend dependencies<br />
-                cd ../server && pip install -r requirements.txt<br />
-                <br />
-                # Start services with Docker<br />
-                cd .. && docker-compose up -d
-              </>
-            )}
-          </div>
-
-          <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem', color: '#374151' }}>
-            3. Run the Application
-          </h3>
-          <div style={{ 
-            background: '#f9fafb', 
-            padding: '1rem', 
-            borderRadius: '8px',
-            fontFamily: 'monospace',
-            fontSize: '0.875rem',
-            marginBottom: '1rem'
-          }}>
-            {exercise.role === 'Frontend' && (
-              <>
-                # Terminal 1: Start mock server<br />
-                cd server_mock && python -m uvicorn app.main:app --reload --port 4001<br />
-                <br />
-                # Terminal 2: Start frontend<br />
-                cd client && pnpm dev
-              </>
-            )}
-            {exercise.role === 'Backend' && (
-              <>
-                # Start the backend server<br />
-                cd server && python -m uvicorn app.main:app --reload --port 4000<br />
-                <br />
-                # Access the mock client at http://localhost:4001
-              </>
-            )}
-            {exercise.role === 'Full-Stack' && (
-              <>
-                # Terminal 1: Start backend<br />
-                cd server && python -m uvicorn app.main:app --reload --port 4000<br />
-                <br />
-                # Terminal 2: Start frontend<br />
-                cd client && pnpm dev
-              </>
-            )}
-          </div>
-
-          <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem', color: '#374151' }}>
-            4. Access the Application
-          </h3>
-          <p style={{ color: '#374151', lineHeight: '1.8' }}>
-            Open your browser and navigate to: <strong>{exercise.route}</strong>
-          </p>
-        </div>
-
         {/* Start Exercise Button */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <a 
@@ -499,29 +364,37 @@ export default function ExerciseDetailPage() {
             rel="noopener noreferrer"
             style={{ 
               display: 'inline-block',
-              padding: '1rem 3rem', 
-              background: 'linear-gradient(135deg, #2c5364 0%, #0f2027 100%)',
+              padding: '1.25rem 3.5rem', 
+              background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
               color: 'white', 
               border: 'none', 
               borderRadius: '12px',
-              fontSize: '1.125rem',
-              fontWeight: 600,
+              fontSize: '1.25rem',
+              fontWeight: 700,
               cursor: 'pointer',
               textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(44, 83, 100, 0.4)',
-              transition: 'transform 0.2s ease'
+              boxShadow: '0 6px 16px rgba(255, 107, 53, 0.4)',
+              transition: 'all 0.3s ease'
             }}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 107, 53, 0.5)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(255, 107, 53, 0.4)';
+            }}
           >
-            🚀 Clone & Start Exercise
+            <Rocket size={20} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '0.5rem' }} />
+            Start the Challenge
           </a>
           <p style={{ 
             marginTop: '1rem', 
-            fontSize: '0.875rem', 
-            color: 'rgba(255,255,255,0.9)' 
+            fontSize: '0.9375rem', 
+            color: '#666666',
+            fontWeight: 500
           }}>
-            This will open the GitHub repository
+            Clone the repository and begin your 90-minute assessment
           </p>
         </div>
       </div>
