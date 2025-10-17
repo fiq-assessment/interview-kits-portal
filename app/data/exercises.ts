@@ -25,7 +25,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3001',
     time: '90 min',
     pagination: 'Offset',
-    githubRepo: 'https://github.com/fiq-assessment/fe-beginner-catalog',
+    githubRepo: 'https://github.com/FulfillmentIQ/fe-beginner-catalog',
     repoName: 'fe-beginner-catalog',
     tasks: [
       'Implement debounced search (300ms) filtering by name/description',
@@ -53,7 +53,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3002',
     time: '90 min',
     pagination: 'Offset',
-    githubRepo: 'https://github.com/fiq-assessment/fe-intermediate-issues',
+    githubRepo: 'https://github.com/FulfillmentIQ/fe-intermediate-issues',
     repoName: 'fe-intermediate-issues',
     tasks: [
       'Implement table view with server-side offset pagination',
@@ -81,7 +81,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3003',
     time: '90 min',
     pagination: 'Cursor',
-    githubRepo: 'https://github.com/fiq-assessment/fe-expert-perf',
+    githubRepo: 'https://github.com/FulfillmentIQ/fe-expert-perf',
     repoName: 'fe-expert-perf',
     tasks: [
       'Implement virtualized list rendering (react-window) for 10k+ items',
@@ -109,7 +109,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3004',
     time: '90 min',
     pagination: 'Offset',
-    githubRepo: 'https://github.com/fiq-assessment/be-beginner-products',
+    githubRepo: 'https://github.com/FulfillmentIQ/be-beginner-products',
     repoName: 'be-beginner-products',
     tasks: [
       'Implement GET /products with search, category filter, sort, and offset pagination',
@@ -137,7 +137,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3005',
     time: '90 min',
     pagination: 'Cursor',
-    githubRepo: 'https://github.com/fiq-assessment/be-intermediate-orders',
+    githubRepo: 'https://github.com/FulfillmentIQ/be-intermediate-orders',
     repoName: 'be-intermediate-orders',
     tasks: [
       'Implement POST /cart/items to add items (use x-user-id header)',
@@ -165,7 +165,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3006',
     time: '90 min',
     pagination: 'Offset',
-    githubRepo: 'https://github.com/fiq-assessment/be-expert-platform',
+    githubRepo: 'https://github.com/FulfillmentIQ/be-expert-platform',
     repoName: 'be-expert-platform',
     tasks: [
       'Implement user authentication with roles (admin/user) stored in MongoDB',
@@ -193,7 +193,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3007',
     time: '90 min',
     pagination: 'Offset',
-    githubRepo: 'https://github.com/fiq-assessment/fs-beginner-journal',
+    githubRepo: 'https://github.com/FulfillmentIQ/fs-beginner-journal',
     repoName: 'fs-beginner-journal',
     tasks: [
       'Backend: Implement GET /entries with date range filter (from/to) and pagination',
@@ -221,7 +221,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3008',
     time: '90 min',
     pagination: 'Cursor',
-    githubRepo: 'https://github.com/fiq-assessment/fs-intermediate-shipments',
+    githubRepo: 'https://github.com/FulfillmentIQ/fs-intermediate-shipments',
     repoName: 'fs-intermediate-shipments',
     tasks: [
       'Backend: GET /shipments with filters (status, facilityId, from/to dates, PO) + cursor pagination',
@@ -249,7 +249,7 @@ export const exercises: Exercise[] = [
     route: 'http://localhost:3009',
     time: '90 min',
     pagination: 'Offset',
-    githubRepo: 'https://github.com/fiq-assessment/fs-expert-admin',
+    githubRepo: 'https://github.com/FulfillmentIQ/fs-expert-admin',
     repoName: 'fs-expert-admin',
     tasks: [
       'Backend: POST /auth/login with password validation, return JWT token',

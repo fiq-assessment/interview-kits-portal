@@ -5,7 +5,7 @@ A centralized Next.js portal for accessing and managing 9 technical interview ch
 ## 🌐 Live Portal
 
 **Local Development:** http://localhost:3000  
-**GitHub Organization:** https://github.com/fiq-assessment
+**GitHub Organization:** https://github.com/FulfillmentIQ
 
 ---
 
@@ -50,7 +50,7 @@ A centralized Next.js portal for accessing and managing 9 technical interview ch
 
 ```bash
 # Clone the portal repository
-git clone https://github.com/fiq-assessment/interview-kits-portal.git
+git clone https://github.com/FulfillmentIQ/interview-kits-portal.git
 cd interview-kits-portal
 
 # Install dependencies
@@ -239,13 +239,13 @@ To add or modify exercises:
 
 For issues or questions:
 - **GitHub Issues** - Create an issue in this repository
-- **Organization** - Contact fiq-assessment admins
+- **Organization** - Contact FulfillmentIQ admins
 
 ---
 
 ## 📄 License
 
-Private - For fiq-assessment organization use only.
+Private - For FulfillmentIQ organization use only.
 
 ---
 
@@ -253,6 +253,6 @@ Private - For fiq-assessment organization use only.
 
 Built with ❤️ using Next.js, React, and TypeScript.
 
-**Organization:** [fiq-assessment](https://github.com/fiq-assessment)  
+**Organization:** [FulfillmentIQ](https://github.com/FulfillmentIQ)  
 **Year:** 2025
 

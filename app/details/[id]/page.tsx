@@ -47,7 +47,7 @@ export default function ExerciseDetailPage() {
   return (
     <div style={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
       padding: '2rem'
     }}>
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
@@ -261,8 +261,81 @@ export default function ExerciseDetailPage() {
             <li><strong>Documentation:</strong> Leave notes on trade-offs and what you'd do with more time</li>
             <li><strong>Code Quality:</strong> Prioritize clarity and structure over perfection</li>
             <li><strong>Questions:</strong> Document assumptions in your README</li>
-            <li><strong>Submission:</strong> Push to a branch named <code style={{ background: '#f3f4f6', padding: '0.125rem 0.5rem', borderRadius: '4px' }}>your-name</code></li>
           </ul>
+        </div>
+
+        {/* Submission Instructions */}
+        <div style={{ 
+          background: 'rgba(254, 243, 199, 0.95)', 
+          borderRadius: '16px', 
+          padding: '2rem',
+          marginBottom: '2rem',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+          border: '2px solid #f59e0b'
+        }}>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#78350f' }}>
+            🚫 Submission Rules - READ CAREFULLY
+          </h2>
+          <div style={{ 
+            background: '#fef3c7', 
+            padding: '1rem', 
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            border: '1px solid #fbbf24'
+          }}>
+            <strong style={{ color: '#dc2626', fontSize: '1.125rem' }}>⚠️ COMMITS TO MAIN BRANCH WILL BE REJECTED</strong>
+          </div>
+          <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem', color: '#78350f' }}>
+            Follow these steps:
+          </h3>
+          <ol style={{ paddingLeft: '1.5rem', lineHeight: '2', color: '#78350f' }}>
+            <li>
+              <strong>Create a new branch with your name:</strong>
+              <div style={{ 
+                background: '#fff', 
+                padding: '0.75rem', 
+                borderRadius: '6px',
+                fontFamily: 'monospace',
+                fontSize: '0.875rem',
+                margin: '0.5rem 0',
+                border: '1px solid #e2e8f0'
+              }}>
+                git checkout -b your-name
+              </div>
+            </li>
+            <li>
+              <strong>Make your commits on your branch:</strong>
+              <div style={{ 
+                background: '#fff', 
+                padding: '0.75rem', 
+                borderRadius: '6px',
+                fontFamily: 'monospace',
+                fontSize: '0.875rem',
+                margin: '0.5rem 0',
+                border: '1px solid #e2e8f0'
+              }}>
+                git add .<br />
+                git commit -m "Your commit message"
+              </div>
+            </li>
+            <li>
+              <strong>Push your branch to GitHub:</strong>
+              <div style={{ 
+                background: '#fff', 
+                padding: '0.75rem', 
+                borderRadius: '6px',
+                fontFamily: 'monospace',
+                fontSize: '0.875rem',
+                margin: '0.5rem 0',
+                border: '1px solid #e2e8f0'
+              }}>
+                git push origin your-name
+              </div>
+            </li>
+            <li>
+              <strong>Create a Pull Request</strong> from your branch to <code style={{ background: '#fff', padding: '0.125rem 0.5rem', borderRadius: '4px' }}>main</code> on GitHub
+            </li>
+          </ol>
         </div>
 
         {/* GitHub Repository */}
@@ -427,7 +500,7 @@ export default function ExerciseDetailPage() {
             style={{ 
               display: 'inline-block',
               padding: '1rem 3rem', 
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #2c5364 0%, #0f2027 100%)',
               color: 'white', 
               border: 'none', 
               borderRadius: '12px',
@@ -435,7 +508,7 @@ export default function ExerciseDetailPage() {
               fontWeight: 600,
               cursor: 'pointer',
               textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)',
+              boxShadow: '0 4px 12px rgba(44, 83, 100, 0.4)',
               transition: 'transform 0.2s ease'
             }}
             onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}

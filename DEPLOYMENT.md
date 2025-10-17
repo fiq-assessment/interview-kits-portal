@@ -2,7 +2,7 @@
 
 ## ✅ Repository Status
 
-**GitHub Repository:** https://github.com/fiq-assessment/interview-kits-portal  
+**GitHub Repository:** https://github.com/FulfillmentIQ/interview-kits-portal  
 **Status:** ✅ Live and ready to deploy!
 
 ---
@@ -11,7 +11,7 @@
 
 ### 1. Vercel (Recommended - 2 minutes)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/fiq-assessment/interview-kits-portal)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/FulfillmentIQ/interview-kits-portal)
 
 **Manual Deployment:**
 ```bash
@@ -101,7 +101,7 @@ No environment variables required! All configuration is in the code.
 
 **Optional Variables:**
 - `NEXT_PUBLIC_ANALYTICS_ID` - For analytics tracking
-- `NEXT_PUBLIC_GITHUB_ORG` - GitHub organization name (default: fiq-assessment)
+- `NEXT_PUBLIC_GITHUB_ORG` - GitHub organization name (default: FulfillmentIQ)
 
 ---
 
@@ -180,7 +180,7 @@ The portal homepage (`/`) serves as the health check endpoint.
 
 ### Adding New Exercises
 
-1. Add to GitHub: `gh repo create fiq-assessment/new-exercise`
+1. Add to GitHub: `gh repo create FulfillmentIQ/new-exercise`
 2. Add to `app/data/exercises.ts`
 3. Push changes - auto-deploys
 
@@ -236,8 +236,8 @@ The portal homepage (`/`) serves as the health check endpoint.
 
 ## 📞 Support
 
-**GitHub Issues:** https://github.com/fiq-assessment/interview-kits-portal/issues  
-**Organization:** https://github.com/fiq-assessment
+**GitHub Issues:** https://github.com/FulfillmentIQ/interview-kits-portal/issues  
+**Organization:** https://github.com/FulfillmentIQ
 
 ---
 
