@@ -212,15 +212,19 @@ The portal homepage (`/`) serves as the health check endpoint.
 
 ## 🎉 Success!
 
-Once deployed, share the URL with candidates:
+Once deployed, share the URL and credentials with candidates:
 
 **Portal URL:** `https://your-domain.com` (or hosting platform URL)
 
 Candidates can:
-1. Browse all 9 exercises
-2. Read detailed requirements
-3. Clone repositories
-4. Start coding!
+1. Login with their assigned credentials
+2. Enter their name
+3. View their assigned exercise
+4. Read detailed requirements
+5. Clone repositories
+6. Start coding!
+
+**Note:** Each candidate sees only their assigned test based on their login credentials.
 
 ---
 

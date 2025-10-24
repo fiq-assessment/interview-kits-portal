@@ -11,6 +11,8 @@ A centralized Next.js portal for accessing and managing 9 technical interview ch
 
 ## ✨ Features
 
+- **🔐 Secure Login System** - Each test has unique credentials with name capture
+- **👤 Personalized Experience** - Candidates see only their assigned test
 - **9 Interview Challenges** - Beginner, Intermediate, and Expert levels
 - **Beautiful UI** - Modern gradient design with smooth interactions
 - **Detailed Instructions** - Complete setup guides for each challenge
@@ -56,11 +58,46 @@ cd interview-kits-portal
 # Install dependencies
 pnpm install
 
+# Copy environment file (required)
+cp .env.local.example .env.local
+# The .env.local file contains the CREDENTIALS environment variable
+
 # Run development server
 pnpm dev
 ```
 
 The portal will be available at: **http://localhost:3000**
+
+**⚠️ Important:** The `.env.local` file is required and contains sensitive credentials. It is git-ignored for security.
+
+### Vercel Deployment
+
+For Vercel deployment, add the `CREDENTIALS` environment variable in your Vercel dashboard.  
+See `VERCEL-DEPLOYMENT.md` for detailed instructions.
+
+### 🔐 Secure Login System
+
+The portal features enterprise-grade authentication with server-side verification:
+
+1. **Login Page:** Candidates enter their assigned username and password
+2. **Server Verification:** Credentials verified via secure API (not in browser)
+3. **Name Capture:** After authentication, candidates enter their full name
+4. **Personalized View:** Each candidate sees ONLY their assigned test
+5. **9 Unique Credentials:** Stored securely server-side (see `CREDENTIALS.md`)
+
+**Security Features:**
+- ✅ Credentials stored in `credentials.json` (server-side only, git-ignored)
+- ✅ Verification via API route (`/api/auth/login`)
+- ✅ No passwords exposed in browser source code
+- ✅ Cannot be inspected via browser dev tools
+
+**Example Credentials:**
+- Frontend Beginner: `fiq-fe-beginner-2024` / `Kx9#mP2vL@nR8qT!`
+- Backend Expert: `fiq-be-expert-2024` / `Bj4$Xl6Tp!Mh8Wd@`
+- Full-Stack Intermediate: `fiq-fs-inter-2024` / `Nh7!Ws3Dz$Jm6Xb@Tk`
+
+📄 **Full credentials list:** See `CREDENTIALS.md`  
+📖 **Login system docs:** See `LOGIN-SYSTEM.md`
 
 ---
 
@@ -78,19 +115,25 @@ The portal will be available at: **http://localhost:3000**
 ```
 portal/
 ├── app/
-│   ├── layout.tsx          # Root layout
-│   ├── page.tsx            # Home page (exercise grid)
-│   ├── globals.css         # Global styles
+│   ├── layout.tsx             # Root layout with AuthProvider
+│   ├── page.tsx               # Home page (personalized for user)
+│   ├── login/
+│   │   └── page.tsx           # Login page with 2-step auth
+│   ├── components/
+│   │   └── AuthProvider.tsx   # Authentication wrapper
+│   ├── globals.css            # Global styles
 │   ├── data/
-│   │   └── exercises.ts    # Exercise metadata
+│   │   └── exercises.ts       # Exercise metadata
 │   └── details/
 │       └── [id]/
-│           └── page.tsx    # Exercise detail pages
-├── public/                 # Static assets
-├── package.json            # Dependencies
-├── tsconfig.json           # TypeScript config
-├── next.config.js          # Next.js config
-└── README.md               # This file
+│           └── page.tsx       # Exercise detail pages
+├── CREDENTIALS.md             # Login credentials for all 9 tests
+├── LOGIN-SYSTEM.md            # Authentication system documentation
+├── public/                    # Static assets
+├── package.json               # Dependencies
+├── tsconfig.json              # TypeScript config
+├── next.config.js             # Next.js config
+└── README.md                  # This file
 ```
 
 ---
@@ -184,29 +227,41 @@ Candidates can click any exercise card to:
 
 ### For Interviewers
 
-1. **Share portal URL** with candidates
-2. **Select appropriate challenge** based on role and level
-3. **Set time limit** (90 minutes recommended)
-4. **Review submission** via GitHub pull request
+1. **Share portal URL and credentials** with candidates (via email/Slack)
+2. **Provide appropriate test credentials** from `CREDENTIALS.md`
+3. **Candidate logs in** and sees only their assigned test
+4. **Set time limit** (90 minutes recommended)
+5. **Review submission** via GitHub pull request
 
 ### For Candidates
 
-1. **Browse available exercises** on the portal
-2. **Read detailed requirements** on the detail page
-3. **Clone the repository** using provided instructions
-4. **Complete the challenge** within time limit
-5. **Push to new branch** with your name
-6. **Submit pull request** for review
+1. **Navigate to portal URL** provided by interviewer
+2. **Login** with your assigned credentials
+3. **Enter your full name** when prompted
+4. **View your assigned test** (only one test will be visible)
+5. **Read detailed requirements** on the detail page
+6. **Clone the repository** using provided instructions
+7. **Complete the challenge** within time limit
+8. **Push to new branch** with your name
+9. **Submit pull request** for review
+10. **Logout** when finished
+
+### Login Flow
+
+```
+Portal URL → Login Page → Enter Credentials → Enter Name → See Assigned Test → Start Challenge
+```
 
 ---
 
 ## 🎯 What Makes This Portal Special
 
-- **Self-Service** - Candidates can choose and start exercises independently
+- **Secure & Personalized** - Each candidate gets unique credentials and sees only their test
+- **Self-Service** - Candidates can start their assigned exercise independently
 - **Clear Expectations** - Detailed requirements, tasks, and bonus items
 - **Production-Ready** - All challenges include Docker, CI/CD, and best practices
 - **Scalable** - Easy to add new exercises or modify existing ones
-- **Professional** - Clean UI with smooth UX
+- **Professional** - Clean UI with smooth UX and modern design
 
 ---
 
