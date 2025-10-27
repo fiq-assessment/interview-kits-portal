@@ -10,18 +10,105 @@ export default function ExerciseDetailPage() {
   const router = useRouter();
   const id = params.id as string;
   const [user, setUser] = useState<any>(null);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [showSubmission, setShowSubmission] = useState(false);
+  const [prUrl, setPrUrl] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
       setUser(JSON.parse(userData));
     }
-  }, []);
+    
+    // Check if candidate has already started this challenge
+    const startedKey = `challenge_started_${id}`;
+    const started = localStorage.getItem(startedKey);
+    if (started === 'true') {
+      setHasStarted(true);
+    }
+  }, [id]);
 
   const handleLogout = () => {
     localStorage.removeItem('authenticated');
     localStorage.removeItem('user');
     router.push('/login');
+  };
+
+  const handleStartChallenge = () => {
+    const startedKey = `challenge_started_${id}`;
+    localStorage.setItem(startedKey, 'true');
+    localStorage.setItem(`challenge_start_time_${id}`, new Date().toISOString());
+    setHasStarted(true);
+    
+    // Update candidate status in admin dashboard
+    const candidatesData = JSON.parse(localStorage.getItem('candidatesData') || '[]');
+    if (user && user.candidateEmail) {
+      const candidateIndex = candidatesData.findIndex(
+        (c: any) => c.email === user.candidateEmail && c.testId === id
+      );
+      if (candidateIndex !== -1 && candidatesData[candidateIndex].status === 'Pending') {
+        candidatesData[candidateIndex].status = 'In Review';
+        candidatesData[candidateIndex].notes += `\nStarted challenge: ${new Date().toISOString()}`;
+        localStorage.setItem('candidatesData', JSON.stringify(candidatesData));
+      }
+    }
+
+    // Open GitHub repo in new tab
+    const currentExercise = exercises.find(e => e.id === id);
+    if (currentExercise) {
+      window.open(currentExercise.githubRepo, '_blank');
+    }
+  };
+
+  const handleFinishTest = () => {
+    setShowSubmission(true);
+  };
+
+  const handleSubmitPR = () => {
+    if (!prUrl.trim()) {
+      alert('Please enter your Pull Request URL');
+      return;
+    }
+
+    // Validate if it's a URL
+    try {
+      new URL(prUrl);
+    } catch {
+      alert('Please enter a valid URL');
+      return;
+    }
+
+    setSubmitting(true);
+
+    // Save submission
+    const submissionKey = `submission_${id}`;
+    localStorage.setItem(submissionKey, JSON.stringify({
+      prUrl,
+      submittedAt: new Date().toISOString(),
+      candidateName: user?.candidateName,
+      candidateEmail: user?.candidateEmail
+    }));
+
+    // Update candidate status in admin dashboard
+    const candidatesData = JSON.parse(localStorage.getItem('candidatesData') || '[]');
+    if (user && user.candidateEmail) {
+      const candidateIndex = candidatesData.findIndex(
+        (c: any) => c.email === user.candidateEmail && c.testId === id
+      );
+      if (candidateIndex !== -1) {
+        candidatesData[candidateIndex].status = 'Completed';
+        candidatesData[candidateIndex].branch = prUrl;
+        candidatesData[candidateIndex].notes += `\nSubmitted PR: ${prUrl}\nSubmission time: ${new Date().toISOString()}`;
+        localStorage.setItem('candidatesData', JSON.stringify(candidatesData));
+      }
+    }
+
+    setTimeout(() => {
+      setSubmitting(false);
+      alert('✅ Test submitted successfully! You will be contacted regarding the results.');
+      handleLogout();
+    }, 1000);
   };
   
   const exercise = exercises.find(e => e.id === id);
@@ -261,6 +348,41 @@ export default function ExerciseDetailPage() {
           </div>
         </div>
 
+        {/* Server Requirements (Frontend Only) */}
+        {exercise.serverRequirements && exercise.serverRequirements.length > 0 && (
+          <div style={{ 
+            background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)', 
+            borderRadius: '16px', 
+            padding: '1.25rem',
+            marginBottom: '1.25rem',
+            boxShadow: '0 8px 32px rgba(245, 158, 11, 0.2)',
+            border: '2px solid #fbbf24'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 16px rgba(245, 158, 11, 0.3)'
+              }}>
+                <Package size={20} color="white" strokeWidth={2.5} />
+              </div>
+              <h2 style={{ fontSize: '1.5rem', color: '#78350f', margin: 0, fontWeight: 700, letterSpacing: '-0.01em' }}>
+                Server Requirements (Mock API)
+              </h2>
+            </div>
+            <ul style={{ paddingLeft: '1.25rem', lineHeight: '1.6', color: '#78350f', fontSize: '1rem', margin: 0 }}>
+              {exercise.serverRequirements.map((req, i) => (
+                <li key={i} style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}>{req}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Problem Statement */}
         <div style={{ 
           background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)', 
@@ -270,58 +392,22 @@ export default function ExerciseDetailPage() {
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
           border: '1px solid rgba(0, 0, 0, 0.05)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem', marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
-                borderRadius: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 16px rgba(255, 107, 53, 0.25)'
-              }}>
-                <ClipboardList size={20} color="white" strokeWidth={2.5} />
-              </div>
-              <h2 style={{ fontSize: '1.5rem', color: '#1a1a1a', margin: 0, fontWeight: 700, letterSpacing: '-0.01em' }}>
-                Problem Statement
-              </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(255, 107, 53, 0.25)'
+            }}>
+              <ClipboardList size={20} color="white" strokeWidth={2.5} />
             </div>
-            <a 
-              href={exercise.githubRepo}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.625rem 1.125rem',
-                background: '#1a1a1a',
-                color: 'white',
-                textDecoration: 'none',
-                borderRadius: '10px',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-                transition: 'all 0.3s ease',
-                border: '2px solid transparent'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
-                e.currentTarget.style.background = '#ff6b35';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
-                e.currentTarget.style.background = '#1a1a1a';
-              }}
-            >
-              <Github size={20} />
-              <span>View on GitHub</span>
-            </a>
+            <h2 style={{ fontSize: '1.5rem', color: '#1a1a1a', margin: 0, fontWeight: 700, letterSpacing: '-0.01em' }}>
+              Problem Statement
+            </h2>
           </div>
           <p style={{ lineHeight: '1.7', color: '#4b5563', fontSize: '1rem', margin: 0 }}>
             {exercise.description}
@@ -389,7 +475,8 @@ export default function ExerciseDetailPage() {
             </h2>
           </div>
           <ul style={{ paddingLeft: '1.25rem', lineHeight: '1.6', color: '#166534', fontSize: '1rem', margin: 0 }}>
-            <li style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}><strong>Clone the repository</strong> from the GitHub link above</li>
+            <li style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}><strong>Click "Start Challenge"</strong> button below to access the GitHub repository</li>
+            <li style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}><strong>Clone the repository</strong> to your local machine</li>
             <li style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}><strong>Install dependencies</strong> - Check package.json/requirements.txt for setup instructions</li>
             <li style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}><strong>Read the boilerplate code</strong> - Contains helpful comments and structure</li>
             <li style={{ marginBottom: '0.375rem', paddingLeft: '0.25rem' }}><strong>Run the development server</strong> - Instructions in the repository</li>
@@ -595,59 +682,196 @@ export default function ExerciseDetailPage() {
                 git push origin your-name
               </div>
             </li>
-            <li style={{ marginBottom: 0 }}>
+            <li style={{ marginBottom: '0.5rem' }}>
               <strong>Create a Pull Request</strong> from your branch to <code style={{ background: '#1a1a1a', padding: '0.25rem 0.625rem', borderRadius: '6px', color: '#10b981', border: '1px solid #374151' }}>main</code> on GitHub
+            </li>
+            <li style={{ marginBottom: 0 }}>
+              <strong>Click "Finish Test"</strong> button below and submit your Pull Request URL
             </li>
           </ol>
         </div>
 
-        {/* Start Exercise Button */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <a 
-            href={exercise.githubRepo}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ 
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.625rem',
-              padding: '1.125rem 3rem', 
-              background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '12px',
-              fontSize: '1.125rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              textDecoration: 'none',
-              boxShadow: '0 12px 40px rgba(255, 107, 53, 0.4)',
-              transition: 'all 0.3s ease',
-              position: 'relative',
-              overflow: 'hidden',
-              letterSpacing: '-0.01em'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-              e.currentTarget.style.boxShadow = '0 16px 50px rgba(255, 107, 53, 0.5)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0) scale(1)';
-              e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 107, 53, 0.4)';
-            }}
-          >
-            <Rocket size={22} strokeWidth={2.5} />
-            <span>Start the Challenge</span>
-          </a>
-          <p style={{ 
-            marginTop: '1rem', 
-            fontSize: '0.9375rem', 
-            color: '#6b7280',
-            fontWeight: 500,
-            letterSpacing: '-0.01em'
+        {/* Submission Form */}
+        {showSubmission && (
+          <div style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+            borderRadius: '16px',
+            padding: '2rem',
+            marginBottom: '2rem',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+            border: '2px solid #ff6b35'
           }}>
-            Clone the repository and begin your 90-minute assessment
-          </p>
-        </div>
+            <h2 style={{ 
+              fontSize: '1.75rem', 
+              color: '#1a1a1a', 
+              marginBottom: '1rem',
+              fontWeight: 700,
+              textAlign: 'center'
+            }}>
+              Submit Your Solution
+            </h2>
+            <p style={{
+              textAlign: 'center',
+              color: '#6b7280',
+              marginBottom: '1.5rem',
+              fontSize: '0.9375rem'
+            }}>
+              Please provide the URL of your Pull Request from GitHub
+            </p>
+            
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{
+                display: 'block',
+                marginBottom: '0.5rem',
+                fontWeight: 600,
+                color: '#374151',
+                fontSize: '0.9375rem'
+              }}>
+                Pull Request URL *
+              </label>
+              <input
+                type="url"
+                value={prUrl}
+                onChange={(e) => setPrUrl(e.target.value)}
+                placeholder="https://github.com/username/repo/pull/123"
+                required
+                style={{
+                  width: '100%',
+                  padding: '0.875rem 1rem',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '8px',
+                  fontSize: '0.9375rem',
+                  outline: 'none',
+                  transition: 'border 0.2s',
+                  fontFamily: 'monospace'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#ff6b35'}
+                onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+              />
+              <p style={{
+                fontSize: '0.8125rem',
+                color: '#6b7280',
+                marginTop: '0.5rem'
+              }}>
+                Example: https://github.com/your-username/repository-name/pull/1
+              </p>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'center'
+            }}>
+              <button
+                onClick={handleSubmitPR}
+                disabled={submitting}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.875rem 2rem',
+                  background: submitting ? '#9ca3af' : '#10b981',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: submitting ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!submitting) {
+                    e.currentTarget.style.background = '#059669';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!submitting) {
+                    e.currentTarget.style.background = '#10b981';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
+                  }
+                }}
+              >
+                <CheckSquare size={20} />
+                {submitting ? 'Submitting...' : 'Submit Test'}
+              </button>
+              
+              <button
+                onClick={() => setShowSubmission(false)}
+                disabled={submitting}
+                style={{
+                  padding: '0.875rem 2rem',
+                  background: '#f3f4f6',
+                  color: '#374151',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: submitting ? 'not-allowed' : 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Start/Finish Challenge Button */}
+        {!showSubmission && (
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <button
+              onClick={hasStarted ? handleFinishTest : handleStartChallenge}
+              style={{ 
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                padding: '1rem 2.5rem',
+                background: hasStarted 
+                  ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                  : 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '1.125rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: hasStarted
+                  ? '0 10px 30px rgba(16, 185, 129, 0.3)'
+                  : '0 10px 30px rgba(255, 107, 53, 0.3)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+                e.currentTarget.style.boxShadow = hasStarted
+                  ? '0 15px 40px rgba(16, 185, 129, 0.4)'
+                  : '0 15px 40px rgba(255, 107, 53, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = hasStarted
+                  ? '0 10px 30px rgba(16, 185, 129, 0.3)'
+                  : '0 10px 30px rgba(255, 107, 53, 0.3)';
+              }}
+            >
+              {hasStarted ? (
+                <>
+                  <CheckSquare size={24} />
+                  <span>Finish Test</span>
+                </>
+              ) : (
+                <>
+                  <Rocket size={24} />
+                  <span>Start Challenge</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

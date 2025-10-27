@@ -12,6 +12,7 @@ export interface Exercise {
   bonus: string[];
   githubRepo: string;
   repoName: string;
+  serverRequirements?: string[];
 }
 
 export const exercises: Exercise[] = [
@@ -27,6 +28,14 @@ export const exercises: Exercise[] = [
     pagination: 'Offset',
     githubRepo: 'https://github.com/fiq-assessment/fe-beginner-catalog',
     repoName: 'fe-beginner-catalog',
+    serverRequirements: [
+      '✅ Python 3.10+ installed (download from python.org)',
+      '✅ Navigate to server_mock directory',
+      '✅ Windows: Run run-server.bat | Mac/Linux: Run ./run-server.sh',
+      '✅ Script automatically installs dependencies and starts server',
+      '✅ Server will be available at http://localhost:4001',
+      '✅ API docs available at http://localhost:4001/docs'
+    ],
     tasks: [
       'Implement debounced search (300ms) filtering by name/description',
       'Add category filter dropdown with immediate updates',
@@ -55,6 +64,14 @@ export const exercises: Exercise[] = [
     pagination: 'Offset',
     githubRepo: 'https://github.com/fiq-assessment/fe-intermediate-issues',
     repoName: 'fe-intermediate-issues',
+    serverRequirements: [
+      '✅ Python 3.10+ installed (download from python.org)',
+      '✅ Navigate to server_mock directory',
+      '✅ Windows: Run run-server.bat | Mac/Linux: Run ./run-server.sh',
+      '✅ Script automatically installs dependencies and starts server',
+      '✅ Server will be available at http://localhost:4001',
+      '✅ API docs available at http://localhost:4001/docs'
+    ],
     tasks: [
       'Implement table view with server-side offset pagination',
       'Add debounced search (300ms) filtering by title/description',
@@ -83,6 +100,14 @@ export const exercises: Exercise[] = [
     pagination: 'Cursor',
     githubRepo: 'https://github.com/fiq-assessment/fe-expert-perf',
     repoName: 'fe-expert-perf',
+    serverRequirements: [
+      '✅ Python 3.10+ installed (download from python.org)',
+      '✅ Navigate to server_mock directory',
+      '✅ Windows: Run run-server.bat | Mac/Linux: Run ./run-server.sh',
+      '✅ Script automatically installs dependencies and starts server',
+      '✅ Server will be available at http://localhost:4001',
+      '✅ API docs available at http://localhost:4001/docs'
+    ],
     tasks: [
       'Implement virtualized list rendering (react-window) for 10k+ items',
       'Build cursor-based pagination with infinite scroll loading',
