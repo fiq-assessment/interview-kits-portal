@@ -15,8 +15,12 @@ export default function HomePage() {
     const userData = localStorage.getItem('user');
     if (userData) {
       const parsedUser = JSON.parse(userData);
-      // Redirect directly to the details page
-      router.push(`/details/${parsedUser.testId}`);
+      // Redirect admin to admin dashboard, others to their test details
+      if (parsedUser.isAdmin) {
+        router.push('/admin');
+      } else {
+        router.push(`/details/${parsedUser.testId}`);
+      }
     }
   }, [router]);
 
